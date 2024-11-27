@@ -6,7 +6,7 @@
 /*   By: tokuyoshi <tokuyoshi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 00:39:07 by tokuyoshi         #+#    #+#             */
-/*   Updated: 2024/11/26 21:45:54 by tokuyoshi        ###   ########.fr       */
+/*   Updated: 2024/11/27 20:15:17 by tokuyoshi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,48 @@
 
 static	int	check_type(const char *format, va_list args)
 {
-	int	i;
+	int	prin;
 
-	i = 0;
+	prin = 0;
 	if (*format == 'c')
-		i += ft_putchar(va_arg(args, int));
+		prin += ft_putchar(va_arg(args, int));
 	else if (*format == 's')
-		i += ft_putstr(va_arg(args, char *));
+		prin += ft_putstr(va_arg(args, char *));
 	else if (*format == 'p')
-		i += ft_putptr(va_arg(args, unsigned long), HEXADECIMAL_BASE);
+		prin += ft_putptr(va_arg(args, unsigned long), HEXADECIMAL_BASE);
 	else if (*format == 'd' || *format == 'i')
-		i += ft_putnbr(va_arg(args, int), DECIMAL_BASE);
+		prin += ft_putnbr(va_arg(args, int), DECIMAL_BASE);
 	else if (*format == 'u')
-		i += ft_putnbr(va_arg(args, unsigned int), DECIMAL_BASE);
+		prin += ft_putnbr(va_arg(args, unsigned int), DECIMAL_BASE);
 	else if (*format == 'x')
-		i += ft_putnbr(va_args(args, unsigned int), HEXADECIMAL_BASE);
+		prin += ft_putnbr(va_arg(args, unsigned int), HEXADECIMAL_BASE);
 	else if (*format == 'X')
-		i += ft_putnbr(va_args(args, unsigned int), UPPER_HEXADECIMAL_BASE);
+		prin += ft_putnbr(va_arg(args, unsigned int), UPPER_HEXADECIMAL_BASE);
 	else if (*format == '%')
-		i += ft_printchar('%');
-	return (i);
+		prin += ft_putchar('%');
+	return (prin);
 }
 
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
-	int	count;
+	int		len;
 
 	if (!format)
+		return (-1);
+	len = 0;
+	va_start(args, format);
+	while (*format != '\0')
+	{
+		if (*format == '%')
+		{
+			format++;
+			len += check_type(format, args);
+		}
+		else
+			len += ft_putchar(*format);
+		format++;
+	}
+	va_end(args);
+	return (len);
 }

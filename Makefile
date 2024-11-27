@@ -6,7 +6,7 @@
 #    By: tokuyoshi <tokuyoshi@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 12:13:12 by tokuyoshi         #+#    #+#              #
-#    Updated: 2024/11/22 11:50:00 by tokuyoshi        ###   ########.fr        #
+#    Updated: 2024/11/27 20:25:38 by tokuyoshi        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,9 @@ OBJS		=	$(SRCS:.c=.o)
 
 $(NAME):	$(OBJS)
 	$(LIB) $@ $^
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 all:		$(NAME)
 
